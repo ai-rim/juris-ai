@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -12,11 +12,10 @@
   --gold:#c8a030;--gold-l:#f2dc88;--gold-d:#7a6020;
   --bg:#07070e;--bg2:#0c0c1a;--bg3:#121224;
   --text:#ece4d0;--muted:#7a7490;
-  --border:rgba(200,160,48,.16);--bm:rgba(200,160,48,.30);
-  --ar:'Amiri',serif;--fr:'EB Garamond',Georgia,serif;--mono:'JetBrains Mono',monospace;
+  --border:rgba(200,160,48,.16);--bm:rgba(200,160,48,.32);
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--fr);overflow-x:hidden}
+body{background:var(--bg);color:var(--text);overflow-x:hidden;transition:font-family .3s}
 body::before{
   content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
@@ -26,25 +25,66 @@ body::before{
     repeating-linear-gradient(90deg,transparent,transparent 64px,rgba(200,160,48,.012) 64px,rgba(200,160,48,.012) 65px)
 }
 
+/* ── FONTS par langue ── */
+body.lang-ar{font-family:'Amiri',serif}
+body.lang-fr{font-family:'EB Garamond',Georgia,serif}
+
 /* ── NAV ── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
-  padding:18px 56px;background:rgba(7,7,14,.90);
-  backdrop-filter:blur(24px);border-bottom:1px solid var(--border)
+  padding:16px 56px;
+  background:rgba(7,7,14,.92);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border)
 }
-.logo{font-family:var(--fr);font-size:20px;font-weight:800;letter-spacing:5px;
+.logo{
+  font-family:'EB Garamond',serif;font-size:20px;font-weight:800;letter-spacing:5px;
   background:linear-gradient(135deg,var(--gold-l),var(--gold));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.logo span{font-family:var(--mono);font-size:11px;letter-spacing:5px;font-weight:300;
-  -webkit-text-fill-color:var(--gold-d)}
-.nav-links{display:flex;gap:28px;align-items:center}
-.nav-links a{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--muted);text-decoration:none;transition:color .3s}
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-decoration:none
+}
+.logo span{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:5px;font-weight:300;color:var(--gold-d)}
+.nav-right{display:flex;align-items:center;gap:28px}
+.nav-links{display:flex;gap:24px}
+.nav-links a{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:color .3s
+}
 .nav-links a:hover{color:var(--gold)}
-.nav-cta{border:1px solid var(--gold);border-radius:2px;padding:8px 18px;
-  color:var(--gold)!important;transition:all .3s!important}
-.nav-cta:hover{background:var(--gold)!important;-webkit-text-fill-color:var(--bg)!important}
+
+/* Switcher FR | AR */
+.lang-switch{
+  display:flex;align-items:center;
+  border:1px solid var(--border);border-radius:2px;overflow:hidden
+}
+.lang-switch button{
+  background:none;border:none;cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;
+  padding:6px 14px;color:var(--muted);transition:all .25s
+}
+.lang-switch button.active{background:var(--gold);color:var(--bg)}
+.lang-switch button:not(.active):hover{color:var(--gold)}
+.lang-switch .divider{width:1px;background:var(--border)}
+
+.nav-cta{
+  border:1px solid var(--gold);border-radius:2px;padding:8px 18px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;
+  color:var(--gold)!important;text-decoration:none;transition:all .3s
+}
+.nav-cta:hover{background:var(--gold);color:var(--bg)!important}
+
+/* ── CONTENU i18n ── */
+/* Affiche le bon texte selon la langue */
+[data-ar],[data-fr]{transition:opacity .2s}
+body.lang-ar [data-fr]{display:none}
+body.lang-fr [data-ar]{display:none}
+body.lang-ar [data-ar]{display:block}
+body.lang-fr [data-fr]{display:block}
+/* Pour les inline (span) */
+body.lang-ar span[data-fr]{display:none}
+body.lang-fr span[data-ar]{display:none}
+body.lang-ar span[data-ar]{display:inline}
+body.lang-fr span[data-fr]{display:inline}
 
 /* ── HERO ── */
 .hero{
@@ -54,11 +94,12 @@ nav{
 }
 .badge{
   display:inline-flex;align-items:center;gap:12px;
-  font-family:var(--mono);font-size:10px;letter-spacing:5px;text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:5px;text-transform:uppercase;
   color:var(--gold);margin-bottom:36px;animation:fadeUp .8s ease both
 }
 .badge::before,.badge::after{content:'';width:36px;height:1px;background:var(--gold);opacity:.5}
 .wordmark{
+  font-family:'EB Garamond',serif;
   font-size:clamp(80px,11vw,124px);font-weight:800;line-height:.88;letter-spacing:-3px;
   color:var(--gold-l);
   background:linear-gradient(160deg,#fff8e8 0%,var(--gold-l) 40%,var(--gold) 100%);
@@ -66,51 +107,50 @@ nav{
   animation:fadeUp .8s .1s ease both
 }
 .wordmark-ai{
-  display:block;font-family:var(--mono);font-size:clamp(22px,3.5vw,42px);
-  font-weight:300;letter-spacing:22px;color:var(--gold);opacity:.65;
-  animation:fadeUp .8s .2s ease both
+  display:block;font-family:'JetBrains Mono',monospace;
+  font-size:clamp(22px,3.5vw,42px);font-weight:300;letter-spacing:22px;
+  color:var(--gold);opacity:.65;animation:fadeUp .8s .2s ease both
 }
 .hline{
   width:100px;height:1px;margin:32px auto;
   background:linear-gradient(90deg,transparent,var(--gold),transparent);
   animation:fadeUp .8s .3s ease both
 }
-
-/* Hero bilingue : FR gauche | sep | AR droite */
-.hero-bi{
-  display:flex;align-items:center;width:100%;max-width:860px;
-  animation:fadeUp .8s .35s ease both
+.hero-tagline{
+  font-size:clamp(20px,2.5vw,28px);color:var(--muted);
+  max-width:700px;line-height:1.5;
+  animation:fadeUp .8s .4s ease both
 }
-.hero-bi .hfr{
-  flex:1;direction:ltr;text-align:left;padding-right:32px
+body.lang-ar .hero-tagline{font-family:'Amiri',serif}
+body.lang-fr .hero-tagline{font-style:italic}
+.hero-desc{
+  max-width:660px;line-height:1.9;color:var(--muted);margin-top:20px;
+  animation:fadeUp .8s .5s ease both
 }
-.hero-bi .hvsep{
-  width:1px;background:var(--bm);align-self:stretch;flex-shrink:0;min-height:30px
+body.lang-ar .hero-desc{font-family:'Amiri',serif;font-size:19px}
+body.lang-fr .hero-desc{font-size:16px}
+.hero-actions{
+  display:flex;gap:14px;flex-wrap:wrap;justify-content:center;
+  margin-top:44px;animation:fadeUp .8s .6s ease both
 }
-.hero-bi .har{
-  flex:1;direction:rtl;text-align:right;padding-left:32px;font-family:var(--ar)
-}
-.tag-fr{font-size:18px;font-style:italic;color:var(--muted);line-height:1.5}
-.tag-ar{font-size:22px;color:var(--muted);line-height:1.5}
-.desc-fr{font-size:15px;line-height:1.9;color:var(--muted)}
-.desc-ar{font-size:17px;line-height:1.9;color:var(--muted)}
-
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;
-  margin-top:44px;animation:fadeUp .8s .6s ease both}
 .btn-gold{
   display:inline-flex;align-items:center;gap:10px;
   background:linear-gradient(135deg,var(--gold),#9a6e18);
-  color:var(--bg);font-family:var(--fr);font-size:16px;font-weight:700;letter-spacing:2px;
+  color:var(--bg)!important;font-weight:700;letter-spacing:2px;
   padding:15px 34px;border-radius:2px;text-decoration:none;transition:all .3s;
   box-shadow:0 4px 28px rgba(200,160,48,.22)
 }
+body.lang-ar .btn-gold{font-family:'Amiri',serif;font-size:18px}
+body.lang-fr .btn-gold{font-family:'EB Garamond',serif;font-size:16px}
 .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(200,160,48,.38)}
 .btn-out{
   display:inline-flex;align-items:center;gap:10px;
-  background:transparent;color:var(--text);font-family:var(--fr);font-size:16px;
-  letter-spacing:2px;padding:15px 34px;border-radius:2px;text-decoration:none;
+  background:transparent;color:var(--text);letter-spacing:2px;
+  padding:15px 34px;border-radius:2px;text-decoration:none;
   border:1px solid var(--border);transition:all .3s
 }
+body.lang-ar .btn-out{font-family:'Amiri',serif;font-size:18px}
+body.lang-fr .btn-out{font-family:'EB Garamond',serif;font-size:16px}
 .btn-out:hover{border-color:var(--gold);color:var(--gold)}
 
 /* ── STATS ── */
@@ -119,42 +159,40 @@ nav{
   border-top:1px solid var(--border);border-bottom:1px solid var(--border);
   background:rgba(12,12,26,.92)
 }
-.stat{flex:1;max-width:230px;padding:36px 16px;text-align:center;border-right:1px solid var(--border)}
-.stat:last-child{border-right:none}
+.stat{flex:1;max-width:230px;padding:36px 16px;text-align:center;border-left:1px solid var(--border)}
+body.lang-fr .stat{border-left:none;border-right:1px solid var(--border)}
+body.lang-fr .stat:last-child{border-right:none}
+body.lang-ar .stat:last-child{border-left:none}
 .stat-n{
+  font-family:'EB Garamond',serif;
   font-size:48px;font-weight:800;line-height:1;
   background:linear-gradient(135deg,var(--gold-l),var(--gold));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent
+  -webkit-background-clip:text;background-clip:text;color:transparent
 }
-.stat-ar{font-family:var(--ar);font-size:15px;color:var(--gold-d);margin-top:6px}
-.stat-fr{font-size:12px;color:var(--muted);letter-spacing:1px;margin-top:3px}
+.stat-lbl{font-size:14px;color:var(--muted);margin-top:8px}
+body.lang-ar .stat-lbl{font-family:'Amiri',serif;font-size:16px}
+body.lang-fr .stat-lbl{font-family:'EB Garamond',serif;letter-spacing:.5px}
 
 /* ── SECTIONS ── */
 .section{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:88px 56px}
 .slabel{
-  font-family:var(--mono);font-size:10px;letter-spacing:6px;text-transform:uppercase;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:6px;text-transform:uppercase;
   color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px
 }
+body.lang-ar .slabel{flex-direction:row-reverse}
 .slabel::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* ── BILINGUE GÉNÉRIQUE : FR gauche | sep | AR droite ── */
-/* Règle : dans le HTML, toujours écrire FR en premier, AR en second */
-.bi{display:flex;align-items:flex-start;gap:0}
-.bi .bfr{flex:1;direction:ltr;text-align:left;padding-right:32px}
-.bi .bsep{width:1px;background:var(--bm);align-self:stretch;flex-shrink:0}
-.bi .bar{flex:1;direction:rtl;text-align:right;padding-left:32px;font-family:var(--ar)}
-
-.stfr{font-size:clamp(24px,3vw,36px);font-weight:800;line-height:1.2}
-.star{font-size:clamp(26px,3.2vw,40px);font-weight:700;line-height:1.2}
-.stfr span,.star span{color:var(--gold)}
-.ssfr{font-size:15px;line-height:1.8;color:var(--muted);margin-top:12px}
-.ssar{font-size:18px;line-height:1.8;color:var(--muted);margin-top:12px}
+body.lang-ar .slabel::after{order:-1}
+.section-title{font-size:clamp(26px,3.5vw,44px);font-weight:800;line-height:1.2;margin-bottom:16px}
+body.lang-ar .section-title{font-family:'Amiri',serif;font-weight:700}
+.section-title span{color:var(--gold)}
+.section-sub{font-size:17px;line-height:1.8;color:var(--muted);max-width:700px;margin-bottom:48px}
+body.lang-ar .section-sub{font-family:'Amiri',serif;font-size:19px}
+body.lang-fr .section-sub{font-size:16px}
+body.lang-ar .section-sub{margin-right:0;margin-left:auto}
+body.lang-fr .section-sub{margin-left:0;margin-right:auto}
 
 /* ── CARDS ── */
-.grid3{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--border);border:1px solid var(--border);margin-top:48px
-}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:0}
 .card{background:var(--bg2);padding:36px 28px;position:relative;overflow:hidden;transition:background .3s}
 .card::after{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
@@ -168,41 +206,15 @@ nav{
   background:rgba(200,160,48,.08);border:1px solid var(--border);
   display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px
 }
-.ctfr{font-size:13px;font-style:italic;color:var(--gold-d);margin-bottom:4px}
-.ctar{font-family:var(--ar);font-size:19px;font-weight:700;direction:rtl;text-align:right;margin-bottom:14px}
+.ctitle{font-size:20px;font-weight:700;margin-bottom:12px}
+body.lang-ar .ctitle{font-family:'Amiri',serif}
+body.lang-fr .ctitle{font-size:18px;font-weight:600}
 .cdiv{height:1px;background:var(--border);margin-bottom:12px}
-.cdfr{font-size:13px;line-height:1.7;color:var(--muted);margin-bottom:8px}
-.cdar{font-family:var(--ar);font-size:14px;line-height:1.85;color:var(--muted);direction:rtl;text-align:right}
+.cdesc{font-size:15px;line-height:1.8;color:var(--muted)}
+body.lang-ar .cdesc{font-family:'Amiri',serif;font-size:16px}
 
-/* ── STEPS ── */
-.steps{border:1px solid var(--border);margin-top:48px}
-.step{display:grid;grid-template-columns:72px 1fr;border-bottom:1px solid var(--border);transition:background .3s}
-.step:last-child{border-bottom:none}
-.step:hover{background:rgba(200,160,48,.025)}
-.stepn{
-  display:flex;align-items:center;justify-content:center;
-  border-right:1px solid var(--border);
-  font-family:var(--mono);font-size:24px;font-weight:300;color:var(--gold);opacity:.45
-}
-.stepb{padding:28px 32px}
-.stfr-t{font-size:13px;font-style:italic;color:var(--gold-d);margin-bottom:14px}
-.star-t{font-family:var(--ar);font-size:20px;font-weight:700;direction:rtl;text-align:right;margin-bottom:6px}
-/* Descriptions étape : FR gauche | sep | AR droite */
-.stepbi{display:flex;gap:0}
-.stepbfr{flex:1;font-size:13px;line-height:1.75;color:var(--muted);padding-right:20px}
-.stepbsep{width:1px;background:var(--border)}
-.stepbar{flex:1;font-family:var(--ar);font-size:14px;line-height:1.85;color:var(--muted);direction:rtl;text-align:right;padding-left:20px}
-.sbadge{
-  display:inline-block;margin-top:14px;
-  font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);border:1px solid var(--border);padding:3px 10px
-}
-
-/* ── VOICE CARDS ── */
-.grid3v{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1px;background:var(--border);border:1px solid var(--border);margin-top:48px
-}
+/* ── VOICE ── */
+.grid3v{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:0}
 .vcard{background:var(--bg2);padding:40px 28px;text-align:center;transition:background .3s}
 .vcard:hover{background:var(--bg3)}
 .vico{
@@ -210,17 +222,43 @@ nav{
   background:rgba(200,160,48,.08);border:2px solid var(--border);
   display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 20px
 }
-.vtfr{font-size:12px;font-style:italic;color:var(--muted);margin-bottom:6px}
-.vtar{font-family:var(--ar);font-size:20px;font-weight:700;color:var(--gold);margin-bottom:14px}
-.vdfr{font-size:12px;line-height:1.7;color:var(--muted);border-top:1px solid var(--border);padding-top:10px}
-.vdar{font-family:var(--ar);font-size:14px;line-height:1.85;color:var(--muted);direction:rtl;text-align:right;margin-bottom:8px}
+.vtitle{font-size:20px;font-weight:700;color:var(--gold);margin-bottom:14px}
+body.lang-ar .vtitle{font-family:'Amiri',serif}
+.vdesc{font-size:14px;line-height:1.8;color:var(--muted);border-top:1px solid var(--border);padding-top:12px}
+body.lang-ar .vdesc{font-family:'Amiri',serif;font-size:16px}
 .vbanner{
   margin-top:1px;border:1px solid var(--border);border-top:none;
   background:linear-gradient(135deg,rgba(200,160,48,.08),rgba(200,160,48,.03));
-  padding:22px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px
+  padding:22px 40px;text-align:center
 }
-.vbfr{font-size:15px;font-style:italic;color:var(--muted)}
-.vbar{font-family:var(--ar);font-size:19px;color:var(--muted);direction:rtl}
+.vbanner p{font-size:16px;color:var(--muted);font-style:italic}
+body.lang-ar .vbanner p{font-family:'Amiri',serif;font-size:19px;font-style:normal}
+
+/* ── STEPS ── */
+.steps{border:1px solid var(--border)}
+.step{display:grid;grid-template-columns:72px 1fr;border-bottom:1px solid var(--border);transition:background .3s}
+body.lang-ar .step{grid-template-columns:1fr 72px}
+.step:last-child{border-bottom:none}
+.step:hover{background:rgba(200,160,48,.025)}
+.stepn{
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:300;
+  color:var(--gold);opacity:.45
+}
+body.lang-fr .stepn{border-right:1px solid var(--border)}
+body.lang-ar .stepn{border-left:1px solid var(--border);order:2}
+.stepb{padding:28px 32px}
+body.lang-ar .stepb{order:1}
+.step-title{font-size:20px;font-weight:700;margin-bottom:10px}
+body.lang-ar .step-title{font-family:'Amiri',serif}
+body.lang-fr .step-title{font-size:18px;font-weight:600}
+.step-desc{font-size:15px;line-height:1.8;color:var(--muted)}
+body.lang-ar .step-desc{font-family:'Amiri',serif;font-size:17px}
+.sbadge{
+  display:inline-block;margin-top:14px;
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--border);padding:3px 10px
+}
 
 /* ── DEMO ── */
 .demo-grid{
@@ -228,81 +266,82 @@ nav{
   padding:0 56px 88px;display:grid;grid-template-columns:1fr 1fr;gap:32px
 }
 .demo-badge{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+body.lang-ar .demo-badge{flex-direction:row-reverse}
 .demo-badge-ico{
   width:32px;height:32px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;font-size:15px
 }
-.dbfr{font-size:15px;font-weight:700}
-.dbar{font-family:var(--ar);font-size:14px;color:var(--muted);direction:rtl;text-align:right}
+.demo-badge-title{font-size:15px;font-weight:700}
+body.lang-ar .demo-badge-title{font-family:'Amiri',serif;font-size:17px}
 
 .cwin{background:#141428;border-radius:14px;border:1px solid var(--border);overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.55)}
-.chead{
-  background:#0e0e22;padding:14px 18px;
-  display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)
-}
-.cavo{
-  width:34px;height:34px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold),#7a5010);
-  display:flex;align-items:center;justify-content:center;font-size:16px
-}
+.chead{background:#0e0e22;padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+body.lang-ar .chead{flex-direction:row-reverse}
+.cavo{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#7a5010);display:flex;align-items:center;justify-content:center;font-size:16px}
 .cname{font-size:14px;font-weight:600}
 .csub{font-size:11px;color:#4caf50;margin-top:1px}
 .cmsgs{padding:16px;display:flex;flex-direction:column;gap:10px}
-.msg{max-width:88%;padding:11px 14px;border-radius:12px;font-size:14px;line-height:1.6}
-.msg-ar{
+
+/* Messages */
+.msg-user-ar{
   background:linear-gradient(135deg,var(--gold),#9a7818);
   color:#0a0a14;align-self:flex-end;border-radius:12px 12px 2px 12px;
-  font-family:var(--ar);font-size:16px;font-weight:700;direction:rtl;text-align:right
+  font-family:'Amiri',serif;font-size:16px;font-weight:700;
+  direction:rtl;text-align:right;padding:11px 14px;max-width:88%
 }
-.msg-fr{
+body.lang-fr .msg-user-ar{align-self:flex-end}
+
+.msg-user-fr{
   background:linear-gradient(135deg,#4a7cc0,#2a4c90);
   color:#e8f0fc;align-self:flex-end;border-radius:12px 12px 2px 12px;
-  font-size:14px;direction:ltr;text-align:left
+  font-family:'EB Garamond',serif;font-size:14px;
+  direction:ltr;text-align:left;padding:11px 14px;max-width:88%
 }
 .msg-voice{
   background:rgba(200,160,48,.12);border:1px solid var(--border);
   align-self:flex-end;border-radius:12px 12px 2px 12px;
   display:flex;align-items:center;gap:10px;padding:10px 14px;color:var(--gold)
 }
-.msg-bot-ar{
+.msg-bot{
   background:#1e1e38;border:1px solid var(--border);
   align-self:flex-start;border-radius:12px 12px 12px 2px;
-  font-family:var(--ar);font-size:14px;direction:rtl;text-align:right;padding:14px
+  padding:14px;max-width:92%;font-size:14px;line-height:1.7
 }
-.msg-bot-fr{
-  background:#1e1e38;border:1px solid var(--border);
-  align-self:flex-start;border-radius:12px 12px 12px 2px;
-  font-family:var(--fr);font-size:13px;direction:ltr;text-align:left;padding:14px;line-height:1.7
-}
+.msg-bot-ar{font-family:'Amiri',serif;direction:rtl;text-align:right;font-size:15px}
+.msg-bot-fr{font-family:'EB Garamond',serif;direction:ltr;text-align:left}
 .typing{align-self:flex-start;font-size:12px;color:var(--muted);animation:pulse 1.4s infinite}
-.apill{
-  align-self:flex-start;background:rgba(200,160,48,.08);border:1px solid var(--border);
-  border-radius:20px;padding:8px 14px;display:flex;align-items:center;gap:8px;
-  font-size:12px;color:var(--gold);cursor:pointer
-}
-.wf{display:flex;gap:2px;align-items:center;height:14px}
-.wb{width:2px;background:var(--gold);border-radius:1px;animation:wave .7s ease-in-out infinite alternate}
 .transcr{
-  align-self:flex-start;font-size:11px;color:var(--muted);font-family:var(--mono);
+  align-self:flex-start;font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;
   padding:4px 10px;background:rgba(200,160,48,.06);border-radius:4px;
   direction:rtl;margin:-2px 0 2px
 }
+.apill{
+  align-self:flex-start;background:rgba(200,160,48,.08);border:1px solid var(--border);
+  border-radius:20px;padding:8px 14px;display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--gold)
+}
+body.lang-ar .apill-ar{font-family:'Amiri',serif;direction:rtl}
+.wf{display:flex;gap:2px;align-items:center;height:14px}
+.wb{width:2px;background:var(--gold);border-radius:1px;animation:wave .7s ease-in-out infinite alternate}
 
 /* ── CTA ── */
 .cta{position:relative;z-index:1;text-align:center;padding:88px 40px;border-top:1px solid var(--border)}
-.cta-ey{font-family:var(--mono);font-size:10px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:28px}
-.cta-fr{font-size:clamp(22px,3vw,38px);font-weight:800;color:var(--muted);margin-bottom:12px}
-.cta-fr span{color:var(--gold)}
-.cta-div{width:60px;height:1px;background:var(--bm);margin:0 auto 12px}
-.cta-ar{font-family:var(--ar);font-size:clamp(26px,3.5vw,46px);font-weight:700;direction:rtl;margin-bottom:36px}
-.cta-ar span{color:var(--gold)}
+.cta-ey{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:28px}
+.cta-title{font-size:clamp(28px,4vw,52px);font-weight:800;margin-bottom:14px}
+body.lang-ar .cta-title{font-family:'Amiri',serif;font-weight:700}
+.cta-title span{color:var(--gold)}
+.cta-sub{font-size:16px;color:var(--muted);margin-bottom:36px}
+body.lang-ar .cta-sub{font-family:'Amiri',serif;font-size:18px}
 .act-box{
   display:inline-block;margin:0 auto 36px;padding:24px 40px;
-  border:1px solid var(--bm);background:rgba(200,160,48,.05);border-radius:4px;max-width:600px
+  border:1px solid var(--bm);background:rgba(200,160,48,.05);
+  border-radius:4px;max-width:600px
 }
-.act-ar{font-family:var(--ar);font-size:17px;direction:rtl;color:var(--text);margin-bottom:8px}
-.act-fr{font-size:14px;color:var(--muted);font-style:italic;margin-bottom:14px}
-.act-tel{font-family:var(--mono);font-size:18px;color:var(--gold);letter-spacing:2px}
+.act-warn{font-size:16px;color:var(--text);margin-bottom:8px}
+body.lang-ar .act-warn{font-family:'Amiri',serif;font-size:18px}
+.act-sub{font-size:14px;color:var(--muted);margin-bottom:14px}
+body.lang-ar .act-sub{font-family:'Amiri',serif;font-size:15px}
+.act-tel{font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--gold);letter-spacing:2px}
 .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 
 /* ── FOOTER ── */
@@ -310,13 +349,12 @@ footer{
   position:relative;z-index:1;border-top:1px solid var(--border);
   padding:36px 56px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px
 }
-.flogo{font-family:var(--fr);font-size:17px;font-weight:800;letter-spacing:5px;
-  background:linear-gradient(135deg,var(--gold-l),var(--gold));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+body.lang-ar footer{flex-direction:row-reverse}
+.flogo{font-family:'EB Garamond',serif;font-size:17px;font-weight:800;letter-spacing:5px;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
 .fcopy{font-size:12px;color:var(--gold-d);letter-spacing:1px}
-.far{font-family:var(--ar);font-size:14px;color:var(--gold-d);direction:rtl}
+body.lang-ar .fcopy{font-family:'Amiri',serif;font-size:14px}
 
-/* ── ANIMS ── */
+/* ── ANIMATIONS ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 @keyframes wave{from{height:3px}to{height:14px}}
 @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
@@ -324,263 +362,194 @@ footer{
 /* ── RESPONSIVE ── */
 @media(max-width:960px){
   nav{padding:14px 20px}.nav-links{display:none}
-  .hero-bi{flex-direction:column;gap:8px}
-  .hero-bi .hvsep,.bi .bsep,.stepbsep{display:none}
-  .hero-bi .hfr,.hero-bi .har{padding:0;text-align:center}
-  .bi .bfr,.bi .bar{padding:0;text-align:center}
-  .bi{flex-direction:column}
   .grid3,.grid3v{grid-template-columns:1fr}
   .demo-grid{grid-template-columns:1fr;padding:0 24px 60px}
-  .stepbi{flex-direction:column;gap:8px}
-  .stepbfr,.stepbar{padding:0;text-align:center}
   .section{padding:56px 24px}
-  .stats{flex-wrap:wrap}.stat{min-width:50%;border-right:none;border-bottom:1px solid var(--border)}
-  footer{flex-direction:column;text-align:center}
-  .vbanner{flex-direction:column;text-align:center}
+  .stats{flex-wrap:wrap}.stat{min-width:50%}
+  footer{flex-direction:column!important;text-align:center}
 }
 </style>
 </head>
-<body>
+<body class="lang-ar">
 
-<!-- NAV -->
+<!-- ══ NAV ══ -->
 <nav>
-  <div class="logo">JURIS <span>AI</span></div>
-  <div class="nav-links">
-    <a href="#features">Fonctionnalités · المميزات</a>
-    <a href="#voice">Vocal · صوتي</a>
-    <a href="#how">Comment · كيف يعمل</a>
-    <a href="#demo">Démo · عرض</a>
-    <a href="https://t.me/JurisAiRim_bot" class="nav-cta">تواصل معنا →</a>
+  <a href="#" class="logo">JURIS <span>AI</span></a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#features"><span data-ar>المميزات</span><span data-fr>Fonctionnalités</span></a>
+      <a href="#voice"><span data-ar>صوتي</span><span data-fr>Vocal</span></a>
+      <a href="#how"><span data-ar>كيف يعمل</span><span data-fr>Comment</span></a>
+      <a href="#demo"><span data-ar>عرض</span><span data-fr>Démo</span></a>
+    </div>
+
+    <!-- Switcher -->
+    <div class="lang-switch">
+      <button onclick="setLang('fr')" id="btn-fr">FR</button>
+      <div class="divider"></div>
+      <button onclick="setLang('ar')" id="btn-ar" class="active">AR</button>
+    </div>
+
+    <a href="https://t.me/JurisAiRim_bot" class="nav-cta">
+      <span data-ar>تواصل معنا ←</span>
+      <span data-fr>Nous contacter →</span>
+    </a>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ══ HERO ══ -->
 <section class="hero">
-  <div class="badge">ذكاء اصطناعي قانوني — Intelligence Juridique IA</div>
+  <div class="badge">
+    <span data-ar>ذكاء اصطناعي قانوني</span>
+    <span data-fr>Intelligence Juridique IA</span>
+  </div>
   <div class="wordmark">JURIS<span class="wordmark-ai">AI</span></div>
   <div class="hline"></div>
-
-  <!-- FR gauche | AR droite -->
-  <div class="hero-bi" style="animation:fadeUp .8s .35s ease both">
-    <div class="har"><div class="tag-ar">المساعد القانوني الذكي لموريتانيا</div></div>
-    <div class="hvsep"></div>
-    <div class="hfr"><div class="tag-fr">L'assistant juridique intelligent pour la Mauritanie</div></div>
+  <div class="hero-tagline">
+    <span data-ar>المساعد القانوني الذكي لموريتانيا</span>
+    <span data-fr>L'assistant juridique intelligent pour la Mauritanie</span>
   </div>
-
-  <div class="hero-bi" style="margin-top:20px;animation:fadeUp .8s .5s ease both">
-    <div class="har"><div class="desc-ar">استفسر عن النصوص القانونية الموريتانية بلغتك الطبيعية. إجابات دقيقة مع النص الكامل، القراءة الصوتية، والمرجع الدقيق.</div></div>
-    <div class="hvsep"></div>
-    <div class="hfr"><div class="desc-fr">Interrogez les textes juridiques mauritaniens en langage naturel — en arabe ou en français. Réponses précises avec texte intégral, lecture audio et référence exacte.</div></div>
+  <div class="hero-desc">
+    <span data-ar>استفسر عن النصوص القانونية الموريتانية بلغتك الطبيعية. إجابات دقيقة مع النص الكامل، القراءة الصوتية، والمرجع الدقيق.</span>
+    <span data-fr>Interrogez les textes juridiques mauritaniens en langage naturel. Réponses précises avec texte intégral, lecture audio et référence exacte.</span>
   </div>
-
   <div class="hero-actions">
     <a href="https://t.me/JurisAiRim_bot" class="btn-gold">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
-      Essayer · تجربة
+      <span data-ar>تجربة الآن</span><span data-fr>Essayer</span>
     </a>
-    <a href="tel:+22246536376" class="btn-out">📞 Activer · تفعيل الحساب</a>
+    <a href="tel:+22246536376" class="btn-out">
+      📞 <span data-ar>تفعيل الحساب</span><span data-fr>Activer le compte</span>
+    </a>
   </div>
 </section>
 
-<!-- STATS -->
+<!-- ══ STATS ══ -->
 <div class="stats">
-  <div class="stat"><div class="stat-n">6+</div><div class="stat-ar">قوانين مفهرسة</div><div class="stat-fr">Codes indexés</div></div>
-  <div class="stat"><div class="stat-n">5000+</div><div class="stat-ar">مادة قانونية</div><div class="stat-fr">Articles de loi</div></div>
-  <div class="stat"><div class="stat-n">2</div><div class="stat-ar">لغتان</div><div class="stat-fr">Langues</div></div>
-  <div class="stat"><div class="stat-n">&lt;3s</div><div class="stat-ar">وقت الاستجابة</div><div class="stat-fr">Temps de réponse</div></div>
+  <div class="stat"><div class="stat-n">6+</div><div class="stat-lbl"><span data-ar>قوانين مفهرسة</span><span data-fr>Codes indexés</span></div></div>
+  <div class="stat"><div class="stat-n">5000+</div><div class="stat-lbl"><span data-ar>مادة قانونية</span><span data-fr>Articles de loi</span></div></div>
+  <div class="stat"><div class="stat-n">2</div><div class="stat-lbl"><span data-ar>لغتان</span><span data-fr>Langues</span></div></div>
+  <div class="stat"><div class="stat-n">&lt;3s</div><div class="stat-lbl"><span data-ar>وقت الاستجابة</span><span data-fr>Temps de réponse</span></div></div>
 </div>
 
-<!-- FONCTIONNALITÉS -->
+<!-- ══ FONCTIONNALITÉS ══ -->
 <section class="section" id="features">
-  <div class="slabel">Fonctionnalités · المميزات</div>
-
-  <!-- FR gauche | AR droite -->
-  <div class="bi" style="margin-bottom:48px">
-    <div class="bsep"></div>
-    <div class="bar">
-      <div class="star">وصول <span>شامل</span> للقانون الموريتاني</div>
-      <div class="ssar">جميع النصوص القانونية الموريتانية قابلة للاستفسار بلغة طبيعية بالعربية أو الفرنسية.</div>
-    </div>
-    <div class="bfr">
-      <div class="stfr">Un accès <span>complet</span> au droit mauritanien</div>
-      <div class="ssfr">Tous les textes juridiques mauritaniens, interrogeables en langage naturel, en arabe ou en français.</div>
-    </div>
-  </div>
-
+  <div class="slabel"><span data-ar>المميزات</span><span data-fr>Fonctionnalités</span></div>
+  <div class="section-title"><span data-ar>وصول <span>شامل</span> للقانون الموريتاني</span><span data-fr>Un accès <span>complet</span> au droit mauritanien</span></div>
+  <div class="section-sub"><span data-ar>جميع النصوص القانونية الموريتانية قابلة للاستفسار بلغة طبيعية بالعربية أو الفرنسية.</span><span data-fr>Tous les textes juridiques mauritaniens, interrogeables en langage naturel, en arabe ou en français.</span></div>
   <div class="grid3">
     <div class="card">
       <div class="cicon">⚖️</div>
-      <div class="ctar">البحث الدلالي</div>
-      <div class="ctfr">Recherche sémantique</div>
+      <div class="ctitle"><span data-ar>البحث الدلالي</span><span data-fr>Recherche sémantique</span></div>
       <div class="cdiv"></div>
-      <div class="cdar">اطرح سؤالك بلغة طبيعية. يفهم Juris AI المعنى القانوني ويجد المواد الأكثر صلة.</div>
-      <div class="cdfr">Posez vos questions en langage naturel. Juris AI comprend le sens juridique et retrouve les articles pertinents.</div>
+      <div class="cdesc"><span data-ar>اطرح سؤالك بلغة طبيعية. يفهم Juris AI المعنى القانوني ويجد المواد الأكثر صلة حتى دون كلمات مفتاحية دقيقة.</span><span data-fr>Posez vos questions en langage naturel. Juris AI comprend le sens juridique et retrouve les articles pertinents, même sans mots-clés exacts.</span></div>
     </div>
     <div class="card">
       <div class="cicon">🌐</div>
-      <div class="ctar">ثنائي اللغة</div>
-      <div class="ctfr">Bilingue natif</div>
+      <div class="ctitle"><span data-ar>ثنائي اللغة</span><span data-fr>Bilingue natif</span></div>
       <div class="cdiv"></div>
-      <div class="cdar">سؤال بالعربية ← إجابة بالعربية. بالفرنسية ← إجابة بالفرنسية. تلقائياً.</div>
-      <div class="cdfr">Question en arabe → réponse en arabe. En français → réponse en français. Automatique.</div>
+      <div class="cdesc"><span data-ar>سؤال بالعربية ← إجابة بالعربية. بالفرنسية ← إجابة بالفرنسية. تلقائياً وبدون إعداد.</span><span data-fr>Question en arabe → réponse en arabe. En français → réponse en français. Automatiquement.</span></div>
     </div>
     <div class="card">
       <div class="cicon">🎙️</div>
-      <div class="ctar">التواصل الصوتي</div>
-      <div class="ctfr">Communication vocale</div>
+      <div class="ctitle"><span data-ar>التواصل الصوتي</span><span data-fr>Communication vocale</span></div>
       <div class="cdiv"></div>
-      <div class="cdar">أرسل رسالة صوتية. Juris AI يسمع، يفهم، ويجيب نصاً وصوتاً — تجربة يدوية الحرة.</div>
-      <div class="cdfr">Envoyez un vocal. Juris AI écoute, comprend et répond par texte et audio — 100% mains libres.</div>
+      <div class="cdesc"><span data-ar>أرسل رسالة صوتية مباشرة. Juris AI يسمع، يفهم، ويجيب نصاً وصوتاً — تجربة يدوية الحرة بالكامل.</span><span data-fr>Envoyez un vocal. Juris AI écoute, comprend et répond par texte et audio — 100% mains libres.</span></div>
     </div>
     <div class="card">
       <div class="cicon">🔊</div>
-      <div class="ctar">القراءة الصوتية</div>
-      <div class="ctfr">Lecture audio</div>
+      <div class="ctitle"><span data-ar>القراءة الصوتية</span><span data-fr>Lecture audio</span></div>
       <div class="cdiv"></div>
-      <div class="cdar">كل إجابة مرفقة برسالة صوتية بلغتك مباشرة في تيليغرام.</div>
-      <div class="cdfr">Chaque réponse est accompagnée d'un message audio dans votre langue, directement dans Telegram.</div>
+      <div class="cdesc"><span data-ar>كل إجابة مرفقة برسالة صوتية بلغتك مباشرة في تيليغرام — بالعربية أو الفرنسية.</span><span data-fr>Chaque réponse est accompagnée d'un message audio dans votre langue, directement dans Telegram.</span></div>
     </div>
     <div class="card">
       <div class="cicon">📚</div>
-      <div class="ctar">مصادر موثوقة</div>
-      <div class="ctfr">Sources vérifiées</div>
+      <div class="ctitle"><span data-ar>مصادر موثوقة</span><span data-fr>Sources vérifiées</span></div>
       <div class="cdiv"></div>
-      <div class="cdar">كل إجابة تستشهد بالمادة الدقيقة والوثيقة المصدر ورقم الصفحة. فقط النصوص الرسمية.</div>
-      <div class="cdfr">Chaque réponse cite l'article exact, le document source et la page. Uniquement les textes officiels.</div>
+      <div class="cdesc"><span data-ar>كل إجابة تستشهد بالمادة الدقيقة والوثيقة المصدر ورقم الصفحة. فقط النصوص الرسمية.</span><span data-fr>Chaque réponse cite l'article exact, le document source et la page. Uniquement les textes officiels.</span></div>
     </div>
     <div class="card">
       <div class="cicon">📎</div>
-      <div class="ctar">رفع الوثائق</div>
-      <div class="ctfr">Upload de documents</div>
+      <div class="ctitle"><span data-ar>رفع الوثائق</span><span data-fr>Upload de documents</span></div>
       <div class="cdiv"></div>
-      <div class="cdar">أرسل ملف PDF في تيليغرام. يفهرسه Juris AI تلقائياً في دقائق معدودة.</div>
-      <div class="cdfr">Envoyez un PDF dans Telegram. Juris AI l'indexe automatiquement en quelques minutes.</div>
+      <div class="cdesc"><span data-ar>أرسل ملف PDF في تيليغرام. يفهرسه Juris AI تلقائياً ويجعله قابلاً للاستفسار في دقائق.</span><span data-fr>Envoyez un PDF dans Telegram. Juris AI l'indexe automatiquement en quelques minutes.</span></div>
     </div>
   </div>
 </section>
 
-<!-- VOCAL -->
+<!-- ══ VOCAL ══ -->
 <section class="section" id="voice" style="padding-top:0">
-  <div class="slabel">Vocal · صوتي</div>
-
-  <div class="bi" style="margin-bottom:48px">
-    <div class="bfr">
-      <div class="stfr">تحدّث مع <span>القانون</div>
-      <div class="ssfr">أرسل رسالة صوتية في تيليغرام. Juris AI يستمع، يفهم، ويجيب بالنص والصوت.</div>
-    </div>
-    <div class="bsep">Parlez au <span>droit</span></div>
-    <div class="bar">
-      <div class="star"></span></div>
-      <div class="ssar">Envoyez un vocal dans Telegram. Juris AI écoute, comprend et répond par texte et audio.</div>
-    </div>
-  </div>
-
+  <div class="slabel"><span data-ar>صوتي</span><span data-fr>Vocal</span></div>
+  <div class="section-title"><span data-ar>تحدّث مع <span>القانون</span></span><span data-fr>Parlez au <span>droit</span></span></div>
+  <div class="section-sub"><span data-ar>أرسل رسالة صوتية في تيليغرام. Juris AI يستمع، يفهم، ويجيب بالنص والصوت.</span><span data-fr>Envoyez un vocal dans Telegram. Juris AI écoute, comprend et répond par texte et audio.</span></div>
   <div class="grid3v">
     <div class="vcard">
       <div class="vico">🎙️</div>
-      <div class="vtar">أرسل رسالة صوتية</div>
-      <div class="vtfr">Envoyez un vocal</div>
-      <div class="vdar">اضغط على زر المايكروفون في تيليغرام وتحدث بسؤالك القانوني بالعربية أو الفرنسية.</div>
-      <div class="vdfr">Appuyez sur le micro dans Telegram et posez votre question en arabe ou en français.</div>
+      <div class="vtitle"><span data-ar>أرسل رسالة صوتية</span><span data-fr>Envoyez un vocal</span></div>
+      <div class="vdesc"><span data-ar>اضغط على زر المايكروفون في تيليغرام وتحدث بسؤالك القانوني بالعربية أو الفرنسية.</span><span data-fr>Appuyez sur le micro dans Telegram et posez votre question en arabe ou en français.</span></div>
     </div>
     <div class="vcard">
       <div class="vico">🧠</div>
-      <div class="vtar">الذكاء الاصطناعي يستمع</div>
-      <div class="vtfr">L'IA transcrit et analyse</div>
-      <div class="vdar">يحوّل الكلام إلى نص، يفهم القصد القانوني، ويبحث في قاعدة بيانات النصوص الرسمية.</div>
-      <div class="vdfr">Transcrit la parole, comprend l'intention juridique, recherche dans la base de textes officiels.</div>
+      <div class="vtitle"><span data-ar>الذكاء الاصطناعي يستمع</span><span data-fr>L'IA transcrit et analyse</span></div>
+      <div class="vdesc"><span data-ar>يحوّل الكلام إلى نص، يفهم القصد القانوني، ويبحث في قاعدة بيانات النصوص الرسمية.</span><span data-fr>Transcrit la parole, comprend l'intention juridique, recherche dans la base de textes officiels.</span></div>
     </div>
     <div class="vcard">
       <div class="vico">🔊</div>
-      <div class="vtar">يجيبك نصاً وصوتاً</div>
-      <div class="vtfr">Réponse texte + audio</div>
-      <div class="vdar">يعرض المواد القانونية بالنص الكامل ويرسل فوراً رسالة صوتية بلغتك.</div>
-      <div class="vdfr">Affiche les articles en texte intégral et envoie immédiatement un message audio dans votre langue.</div>
+      <div class="vtitle"><span data-ar>يجيبك نصاً وصوتاً</span><span data-fr>Réponse texte + audio</span></div>
+      <div class="vdesc"><span data-ar>يعرض المواد القانونية بالنص الكامل ويرسل فوراً رسالة صوتية بلغتك.</span><span data-fr>Affiche les articles en texte intégral et envoie immédiatement un message audio dans votre langue.</span></div>
     </div>
   </div>
-
   <div class="vbanner">
-    <div class="vbfr">100% mains libres — en voiture, au bureau, partout</div>
-    <div class="vbar">تجربة يدوية الحرة — في السيارة، في المكتب، في أي مكان</div>
+    <p data-ar>تجربة يدوية الحرة — في السيارة، في المكتب، في أي مكان</p>
+    <p data-fr>100% mains libres — en voiture, au bureau, partout</p>
   </div>
 </section>
 
-<!-- COMMENT ÇA MARCHE -->
+<!-- ══ COMMENT ÇA MARCHE ══ -->
 <section class="section" id="how" style="padding-top:0">
-  <div class="slabel">Comment ça marche · كيف يعمل</div>
-
-  <div class="bi" style="margin-bottom:48px">
-    <div class="bfr"><div class="stfr">أربع خطوات <span>للبدء</span></div></div>
-    <div class="bsep"></div>
-    <div class="bar"><div class="star">Quatre étapes pour <span>commencer</span></div></div>
-  </div>
-
+  <div class="slabel"><span data-ar>كيف يعمل</span><span data-fr>Comment ça marche</span></div>
+  <div class="section-title"><span data-ar>أربع خطوات <span>للبدء</span></span><span data-fr>Quatre étapes pour <span>commencer</span></span></div>
   <div class="steps">
     <div class="step">
-      <div class="stepn">01</div>
       <div class="stepb">
-        <div class="star-t">افتح Juris AI على تيليغرام</div>
-        <div class="stfr-t">Ouvrez Juris AI sur Telegram</div>
-        <div class="stepbi">
-          <div class="stepbfr">Cherchez @JurisAiRim_bot sur Telegram et tapez /start. Un message de bienvenue s'affiche avec les infos de votre compte.</div>
-          <div class="stepbsep"></div>
-          <div class="stepbar">ابحث عن @JurisAiRim_bot على تيليغرام واضغط /start. ستظهر رسالة الترحيب مع رقم حسابك.</div>
-        </div>
+        <div class="step-title"><span data-ar>افتح Juris AI على تيليغرام</span><span data-fr>Ouvrez Juris AI sur Telegram</span></div>
+        <div class="step-desc"><span data-ar>ابحث عن @JurisAiRim_bot على تيليغرام واضغط /start. ستظهر رسالة الترحيب مع رقم حسابك.</span><span data-fr>Cherchez @JurisAiRim_bot sur Telegram et tapez /start. Un message de bienvenue s'affiche avec votre numéro de compte.</span></div>
         <span class="sbadge">t.me/JurisAiRim_bot</span>
       </div>
+      <div class="stepn">01</div>
     </div>
     <div class="step">
+      <div class="stepb">
+        <div class="step-title"><span data-ar>تواصل مع الإدارة لتفعيل حسابك</span><span data-fr>Contactez l'administration pour activer votre compte</span></div>
+        <div class="step-desc"><span data-ar>أرسل رقم حسابك (الظاهر في رسالة الترحيب) إلى الإدارة عبر 📞 +222 46 53 63 76 لتفعيل الوصول.</span><span data-fr>Envoyez votre numéro de compte (affiché dans le message de bienvenue) à l'administration au 📞 +222 46 53 63 76 pour activer l'accès.</span></div>
+        <span class="sbadge"><span data-ar>تفعيل</span><span data-fr>Activation</span></span>
+      </div>
       <div class="stepn">02</div>
-      <div class="stepb">
-        <div class="star-t">تواصل مع الإدارة لتفعيل حسابك</div>
-        <div class="stfr-t">Contactez l'administration pour activer votre compte</div>
-        <div class="stepbi">
-          <div class="stepbfr">Envoyez votre numéro de compte (affiché dans le message de bienvenue) à l'administration au 📞 +222 46 53 63 76 pour activer l'accès.</div>
-          <div class="stepbsep"></div>
-          <div class="stepbar">أرسل رقم حسابك (الظاهر في رسالة الترحيب) إلى الإدارة عبر الرقم 📞 +222 46 53 63 76 لتفعيل الوصول.</div>
-        </div>
-        <span class="sbadge">تفعيل الحساب · Activation</span>
-      </div>
     </div>
     <div class="step">
+      <div class="stepb">
+        <div class="step-title"><span data-ar>اطرح سؤالك — نصاً أو صوتاً</span><span data-fr>Posez votre question — texte ou vocal</span></div>
+        <div class="step-desc"><span data-ar>اكتب أو أرسل رسالة صوتية بالعربية أو الفرنسية. مثال: «ما هي حقوق العامل عند الفصل التعسفي؟»</span><span data-fr>Écrivez ou envoyez un vocal en arabe ou en français. Ex : « Quels sont les droits du salarié en cas de licenciement ? »</span></div>
+        <span class="sbadge"><span data-ar>نص أو صوت</span><span data-fr>Texte ou vocal</span></span>
+      </div>
       <div class="stepn">03</div>
-      <div class="stepb">
-        <div class="star-t">اطرح سؤالك — نصاً أو صوتاً</div>
-        <div class="stfr-t">Posez votre question — texte ou vocal</div>
-        <div class="stepbi">
-          <div class="stepbfr">Écrivez ou envoyez un vocal en arabe ou en français. Ex : « Quels sont les droits du salarié en cas de licenciement ? »</div>
-          <div class="stepbsep"></div>
-          <div class="stepbar">اكتب أو أرسل رسالة صوتية بالعربية أو الفرنسية. مثال: «ما هي حقوق العامل عند الفصل التعسفي؟»</div>
-        </div>
-        <span class="sbadge">نص أو صوت · Texte ou vocal</span>
-      </div>
     </div>
     <div class="step">
-      <div class="stepn">04</div>
       <div class="stepb">
-        <div class="star-t">استلم الإجابة — نصاً وصوتاً</div>
-        <div class="stfr-t">Recevez la réponse — texte et audio</div>
-        <div class="stepbi">
-          <div class="stepbfr">Les articles pertinents avec texte intégral et explication, puis un message audio dans votre langue.</div>
-          <div class="stepbsep"></div>
-          <div class="stepbar">المواد القانونية ذات الصلة مع النص الكامل والشرح، ثم رسالة صوتية فورية بلغتك.</div>
-        </div>
+        <div class="step-title"><span data-ar>استلم الإجابة — نصاً وصوتاً</span><span data-fr>Recevez la réponse — texte et audio</span></div>
+        <div class="step-desc"><span data-ar>المواد القانونية ذات الصلة مع النص الكامل والشرح، ثم رسالة صوتية فورية بلغتك.</span><span data-fr>Les articles pertinents avec texte intégral et explication, puis un message audio dans votre langue.</span></div>
         <span class="sbadge">IA + TTS</span>
       </div>
+      <div class="stepn">04</div>
     </div>
   </div>
 </section>
 
-<!-- DÉMO -->
+<!-- ══ DÉMO ══ -->
 <section class="section" id="demo" style="padding-bottom:0">
-  <div class="slabel">Démo · عرض توضيحي</div>
-  <div class="bi" style="margin-bottom:48px">
-    <div class="bfr"><div class="stfr">مثل <span>محادثة</span> عادية</div></div>
-    <div class="bsep"></div>
-    <div class="bar"><div class="star">Comme une <span>conversation</span></div></div>
-  </div>
+  <div class="slabel"><span data-ar>عرض توضيحي</span><span data-fr>Démo</span></div>
+  <div class="section-title"><span data-ar>مثل <span>محادثة</span> عادية</span><span data-fr>Comme une <span>conversation</span></span></div>
 </section>
-
 <div class="demo-grid">
 
   <!-- Chat 1 : Vocal AR -->
@@ -588,38 +557,29 @@ footer{
     <div class="demo-badge">
       <div class="demo-badge-ico" style="background:linear-gradient(135deg,var(--gold),#7a5010)">🎙️</div>
       <div>
-        <div class="dbfr">Message vocal — en arabe</div>
-        <div class="dbar">رسالة صوتية — بالعربية</div>
+        <div class="demo-badge-title"><span data-ar>رسالة صوتية — بالعربية</span><span data-fr>Message vocal — en arabe</span></div>
       </div>
     </div>
     <div class="cwin">
       <div class="chead">
         <div class="cavo">⚖️</div>
-        <div><div class="cname">Juris AI</div><div class="csub">● متصل</div></div>
+        <div><div class="cname">Juris AI</div><div class="csub">● <span data-ar>متصل</span><span data-fr>en ligne</span></div></div>
       </div>
       <div class="cmsgs">
-        <div class="msg msg-voice">
+        <div class="msg-voice">
           <span style="font-size:18px">🎙️</span>
-          <div class="wf">
-            <div class="wb" style="animation-delay:.00s"></div><div class="wb" style="animation-delay:.10s"></div>
-            <div class="wb" style="animation-delay:.05s"></div><div class="wb" style="animation-delay:.18s"></div>
-            <div class="wb" style="animation-delay:.08s"></div><div class="wb" style="animation-delay:.03s"></div>
-          </div>
-          <span style="font-size:11px;color:var(--bg);opacity:.7">0:07</span>
+          <div class="wf"><div class="wb" style="animation-delay:.00s"></div><div class="wb" style="animation-delay:.10s"></div><div class="wb" style="animation-delay:.05s"></div><div class="wb" style="animation-delay:.18s"></div><div class="wb" style="animation-delay:.08s"></div></div>
+          <span style="font-size:11px;color:var(--bg)">0:07</span>
         </div>
-        <div class="typing" style="font-family:var(--ar);direction:rtl">Juris AI يعالج الصوت…</div>
+        <div class="typing" style="font-family:'Amiri',serif;direction:rtl">Juris AI يعالج الصوت…</div>
         <div class="transcr">🔤 «ما هي حقوق العامل عند الفصل التعسفي؟»</div>
-        <div class="msg msg-bot-ar">
+        <div class="msg-bot msg-bot-ar">
           <strong style="color:var(--gold)">المادة 47 — الفصل التعسفي</strong><br/>
           الوثيقة: قانون العمل | الصفحة: 18<br/><br/>
-          يُعدّ كل فصل غير مبرر فصلاً تعسفياً يُلزم صاحب العمل بدفع تعويض للعامل يحسب على أساس الأجر والأقدمية…<br/><br/>
+          يُعدّ كل فصل غير مبرر فصلاً تعسفياً يُلزم صاحب العمل بدفع تعويض للعامل…<br/><br/>
           <span style="font-size:12px;color:var(--muted)">الشرح: يحق للعامل المفصول تعسفياً الحصول على تعويض قانوني حتى دون عقد كتابي.</span>
         </div>
-        <div class="apill">
-          🔊
-          <div class="wf"><div class="wb" style="animation-delay:.00s"></div><div class="wb" style="animation-delay:.07s"></div><div class="wb" style="animation-delay:.14s"></div><div class="wb" style="animation-delay:.10s"></div><div class="wb" style="animation-delay:.04s"></div></div>
-          <span style="font-family:var(--ar);direction:rtl">قراءة صوتية — 0:41</span>
-        </div>
+        <div class="apill apill-ar">🔊 <div class="wf"><div class="wb" style="animation-delay:.00s"></div><div class="wb" style="animation-delay:.07s"></div><div class="wb" style="animation-delay:.14s"></div><div class="wb" style="animation-delay:.10s"></div></div> <span>قراءة صوتية — 0:41</span></div>
       </div>
     </div>
   </div>
@@ -629,65 +589,81 @@ footer{
     <div class="demo-badge">
       <div class="demo-badge-ico" style="background:linear-gradient(135deg,#4a7cc0,#2a4c90)">💬</div>
       <div>
-        <div class="dbfr">Message texte — en français</div>
-        <div class="dbar">رسالة نصية — بالفرنسية</div>
+        <div class="demo-badge-title"><span data-ar>رسالة نصية — بالفرنسية</span><span data-fr>Message texte — en français</span></div>
       </div>
     </div>
     <div class="cwin">
       <div class="chead">
         <div class="cavo">⚖️</div>
-        <div><div class="cname">Juris AI</div><div class="csub">● en ligne</div></div>
+        <div><div class="cname">Juris AI</div><div class="csub">● <span data-ar>متصل</span><span data-fr>en ligne</span></div></div>
       </div>
       <div class="cmsgs">
-        <div class="msg msg-fr">
-          Quels sont les droits du locataire en cas d'expulsion ?
-        </div>
+        <div class="msg-user-fr">Quels sont les droits du locataire en cas d'expulsion ?</div>
         <div class="typing">Juris AI est en train d'écrire…</div>
-        <div class="msg msg-bot-fr">
+        <div class="msg-bot msg-bot-fr">
           <strong style="color:var(--gold)">Article 28 — Expulsion locative</strong><br/>
-          Document : Code Civil &nbsp;|&nbsp; Page : 12<br/><br/>
+          Document : Code Civil | Page : 12<br/><br/>
           Aucune expulsion ne peut être exécutée sans décision judiciaire préalable. Le locataire doit être notifié au moins 30 jours avant…<br/><br/>
           <span style="font-size:12px;color:var(--muted)">Explication : Le locataire est protégé contre toute expulsion arbitraire. Un jugement est obligatoire.</span>
         </div>
-        <div class="apill" style="direction:ltr">
-          🔊
-          <div class="wf"><div class="wb" style="animation-delay:.02s"></div><div class="wb" style="animation-delay:.09s"></div><div class="wb" style="animation-delay:.16s"></div><div class="wb" style="animation-delay:.05s"></div><div class="wb" style="animation-delay:.13s"></div></div>
-          Lecture audio — 0:38
-        </div>
+        <div class="apill" style="direction:ltr">🔊 <div class="wf"><div class="wb" style="animation-delay:.02s"></div><div class="wb" style="animation-delay:.09s"></div><div class="wb" style="animation-delay:.16s"></div><div class="wb" style="animation-delay:.05s"></div></div> Lecture audio — 0:38</div>
       </div>
     </div>
   </div>
-
 </div>
 
-<!-- CTA -->
+<!-- ══ CTA ══ -->
 <section class="cta">
-  <div class="cta-ey">Commencer · ابدأ الآن</div>
-  <div class="cta-fr">مساعدك القانوني، <span>على مدار الساعة</span></div>
-  <div class="cta-div"></div>
-  <div class="cta-ar">Votre assistant juridique, <span>24h/24</span></div>
+  <div class="cta-ey"><span data-ar>ابدأ الآن</span><span data-fr>Commencer maintenant</span></div>
+  <div class="cta-title"><span data-ar>مساعدك القانوني، <span>على مدار الساعة</span></span><span data-fr>Votre assistant juridique, <span>24h/24</span></span></div>
+  <div class="cta-sub"><span data-ar>جاهز للإجابة على أسئلتك القانونية في أي وقت وأي مكان</span><span data-fr>Prêt à répondre à vos questions juridiques à tout moment, depuis Telegram</span></div>
   <div class="act-box">
-    <div class="act-ar">⚠️ الخدمة مخصصة للمشتركين — تواصل مع الإدارة لتفعيل حسابك</div>
-    <div class="act-fr">Service réservé aux abonnés — contactez l'administration pour activer votre compte</div>
+    <div class="act-warn">⚠️ <span data-ar>الخدمة مخصصة للمشتركين</span><span data-fr>Service réservé aux abonnés</span></div>
+    <div class="act-sub"><span data-ar>تواصل مع الإدارة لتفعيل حسابك والبدء في الاستخدام</span><span data-fr>Contactez l'administration pour activer votre compte et commencer</span></div>
     <div class="act-tel">📞 +222 46 53 63 76</div>
   </div>
   <div class="cta-btns">
     <a href="https://t.me/JurisAiRim_bot" class="btn-gold" style="font-size:17px;padding:18px 44px">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
-      Ouvrir Telegram · فتح تيليغرام
+      <span data-ar>فتح تيليغرام</span><span data-fr>Ouvrir Telegram</span>
     </a>
     <a href="tel:+22246536376" class="btn-out" style="font-size:17px;padding:18px 44px">
-      📞 Contacter · تواصل
+      📞 <span data-ar>تواصل مع الإدارة</span><span data-fr>Contacter l'administration</span>
     </a>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ══ FOOTER ══ -->
 <footer>
   <div class="flogo">JURIS AI</div>
-  <div class="fcopy">© 2025 Juris AI — Mauritanie · موريتانيا</div>
-  <div class="far">المساعد القانوني الذكي</div>
+  <div class="fcopy"><span data-ar>© 2026 Juris AI — موريتانيا</span><span data-fr>© 2026 Juris AI — Mauritanie</span></div>
+  <div class="fcopy"><span data-ar>المساعد القانوني الذكي</span><span data-fr>L'assistant juridique intelligent</span></div>
 </footer>
 
+<script>
+function setLang(lang) {
+  const body = document.body;
+  const html = document.documentElement;
+
+  // Classe body
+  body.classList.remove('lang-ar','lang-fr');
+  body.classList.add('lang-' + lang);
+
+  // Direction + lang HTML
+  html.setAttribute('lang', lang === 'ar' ? 'ar' : 'fr');
+  html.setAttribute('dir',  lang === 'ar' ? 'rtl' : 'ltr');
+
+  // Boutons actifs
+  document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+  document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+
+  // Titre de page
+  document.title = lang === 'ar'
+    ? 'Juris AI — المساعد القانوني الذكي'
+    : 'Juris AI — L\'assistant juridique intelligent';
+}
+
+// Arabe par défaut — aucune détection automatique
+</script>
 </body>
 </html>
